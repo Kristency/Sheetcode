@@ -1,0 +1,4 @@
+export const FETCH_USERS = 'FETCH_USERS'
+export const FETCH_QUESTIONS = 'FETCH_QUESTIONS'
+export const ADD_QUESTION = 'ADD_QUESTION'
+export const ADD_SOLUTION = 'ADD_SOLUTION'
