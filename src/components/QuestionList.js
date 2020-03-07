@@ -24,7 +24,12 @@ export class QuestionList extends Component {
 
 	renderQuestionsList() {
 		return this.props.questions.map(question => (
-			<QuestionCard question={question} users={this.props.users} onClickingPlusButton={this.setCurrentlySelectedQuestion} />
+			<QuestionCard
+				key={question._id}
+				question={question}
+				users={this.props.users}
+				onClickingPlusButton={this.setCurrentlySelectedQuestion}
+			/>
 		))
 	}
 

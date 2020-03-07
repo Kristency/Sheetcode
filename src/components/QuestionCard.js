@@ -21,7 +21,7 @@ export class QuestionCard extends Component {
 		let { question, onClickingPlusButton } = this.props
 
 		return (
-			<Card body key={question._id}>
+			<Card body>
 				<div className="row">
 					<div className="col-md-4">
 						<a href={question.link} target="_blank" rel="noopener noreferrer">

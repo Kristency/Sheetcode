@@ -17,7 +17,12 @@ export class ResultsList extends Component {
 
 	renderSearchResultsList() {
 		return this.props.filterOrSearchResults.map(question => (
-			<QuestionCard question={question} users={this.props.users} onClickingPlusButton={this.setCurrentlySelectedQuestion} />
+			<QuestionCard
+				key={question._id}
+				question={question}
+				users={this.props.users}
+				onClickingPlusButton={this.setCurrentlySelectedQuestion}
+			/>
 		))
 	}
 
