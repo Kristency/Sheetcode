@@ -1,27 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 
 import history from '../history'
 import { fetchUsers } from '../actions'
 
 import QuestionList from './QuestionList'
+import ResultsList from './ResultsList'
 import Header from './Header'
 
 export class App extends Component {
 	componentDidMount() {
-		if (this.props.users.length === 0) {
-			this.props.fetchUsers()
-		}
+		this.props.fetchUsers()
 	}
 
 	render() {
 		return (
 			<div className="container-fluid px-0">
 				<Router history={history}>
+					<Header />
 					<div>
-						<Header />
-						<QuestionList />
+						<Switch>
+							<Route path="/" exact component={QuestionList} />
+							<Route path="/results" exact component={ResultsList} />
+						</Switch>
 					</div>
 				</Router>
 			</div>
@@ -29,8 +31,4 @@ export class App extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return { users: Object.values(state.users) }
-}
-
-export default connect(mapStateToProps, { fetchUsers })(App)
+export default connect(null, { fetchUsers })(App)

@@ -24,7 +24,7 @@ export class NewSolutionForm extends Component {
 	}
 
 	renderUserSelectOptions = user => (
-		<option key={user.column} value={user.column}>
+		<option key={user._id} value={user._id}>
 			{user.name}
 		</option>
 	)
@@ -37,12 +37,13 @@ export class NewSolutionForm extends Component {
 					<option value="">Select</option>
 					{this.props.users.map(this.renderUserSelectOptions)}
 				</select>
+				{this.renderError(meta)}
 			</div>
 		)
 	}
 
 	onSubmit = formValues => {
-		this.props.addSolution({ ...formValues, row: this.props.question.row })
+		this.props.addSolution({ ...formValues, _id: this.props.question._id })
 		this.props.functionToCallAfterFormSubmitToCloseModal()
 	}
 
@@ -79,7 +80,7 @@ export class NewSolutionForm extends Component {
 const validate = formValues => {
 	const errors = {}
 
-	if (formValues.user_column === '') {
+	if (!formValues.user_column) {
 		errors.user_column = 'Please select a user.'
 	}
 	if (!formValues.solution_link) {

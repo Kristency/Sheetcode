@@ -24,7 +24,7 @@ export class NewQuestionForm extends Component {
 	}
 
 	renderUserSelectOptions = user => (
-		<option key={user.column} value={user.column}>
+		<option key={user._id} value={user._id}>
 			{user.name}
 		</option>
 	)
@@ -39,6 +39,7 @@ export class NewQuestionForm extends Component {
 					<option value="Medium">Medium</option>
 					<option value="Hard">Hard</option>
 				</select>
+				{this.renderError(meta)}
 			</div>
 		)
 	}
@@ -67,6 +68,7 @@ export class NewQuestionForm extends Component {
 					<option value="Sorting">Sorting</option>
 					<option value="Miscellaneous">Miscellaneous</option>
 				</select>
+				{this.renderError(meta)}
 			</div>
 		)
 	}
@@ -79,6 +81,7 @@ export class NewQuestionForm extends Component {
 					<option value="">Select</option>
 					{this.props.users.map(this.renderUserSelectOptions)}
 				</select>
+				{this.renderError(meta)}
 			</div>
 		)
 	}
@@ -141,13 +144,13 @@ const validate = formValues => {
 	if (!formValues.problem_link) {
 		errors.problem_link = 'Please enter a valid problem link.'
 	}
-	if (formValues.difficulty === '') {
+	if (!formValues.difficulty) {
 		errors.difficulty = 'Please select a difficulty level.'
 	}
-	if (formValues.category === '') {
+	if (!formValues.category) {
 		errors.category = 'Please select a category.'
 	}
-	if (formValues.user_column === '') {
+	if (!formValues.user_column) {
 		errors.user_column = 'Please select a user.'
 	}
 	if (!formValues.solution_link) {

@@ -5,7 +5,7 @@ import { FETCH_USERS } from '../actions/types'
 export default (state = {}, action) => {
 	switch (action.type) {
 		case FETCH_USERS:
-			return { ...state, ..._.mapKeys(action.payload, 'column') }
+			return { ...state, ..._.mapKeys(action.payload, '_id') }
 		default:
 			return state
 	}

@@ -1,4 +1,4 @@
-import { FETCH_USERS, FETCH_QUESTIONS, ADD_QUESTION, ADD_SOLUTION } from './types'
+import { FETCH_USERS, FETCH_QUESTIONS, ADD_QUESTION, ADD_SOLUTION, FETCH_SEARCH_RESULTS, FETCH_FILTER_RESULTS } from './types'
 
 import sheetcodeApi from '../apis/sheetcode-api'
 import history from '../history'
@@ -40,5 +40,30 @@ export const addSolution = formValues => {
 			type: ADD_SOLUTION,
 			payload: formValues
 		})
+	}
+}
+
+export const fetchSearchResults = term => {
+	return async dispatch => {
+		const response = await sheetcodeApi.get(`/search?search_query=${term}`)
+		dispatch({
+			type: FETCH_SEARCH_RESULTS,
+			payload: response.data
+		})
+		history.push('/results')
+	}
+}
+
+export const fetchFilterResults = formValues => {
+	let query_category = 'category' in formValues ? `category=${formValues.category}` : ``
+	let query_difficulty = 'difficulty' in formValues && formValues.difficulty !== 'All' ? `&difficulty=${formValues.difficulty}` : ``
+
+	return async dispatch => {
+		const response = await sheetcodeApi.get(`/questions?${query_category}${query_difficulty}`)
+		dispatch({
+			type: FETCH_FILTER_RESULTS,
+			payload: response.data
+		})
+		history.push('/results')
 	}
 }

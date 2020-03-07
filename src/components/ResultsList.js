@@ -1,18 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchQuestions } from '../actions'
 import NewSolutionModal from './NewSolutionModal'
 import QuestionCard from './QuestionCard'
 
-export class QuestionList extends Component {
+export class ResultsList extends Component {
 	state = { modalShow: false, currentlySelectedQuestion: null }
-
-	componentDidMount() {
-		if (this.props.questions.length === 0) {
-			this.props.fetchQuestions()
-		}
-	}
 
 	modalClose = () => {
 		this.setState({ modalShow: false })
@@ -22,8 +15,8 @@ export class QuestionList extends Component {
 		this.setState({ currentlySelectedQuestion: question, modalShow: true })
 	}
 
-	renderQuestionsList() {
-		return this.props.questions.map(question => (
+	renderSearchResultsList() {
+		return this.props.filterOrSearchResults.map(question => (
 			<QuestionCard question={question} users={this.props.users} onClickingPlusButton={this.setCurrentlySelectedQuestion} />
 		))
 	}
@@ -31,7 +24,7 @@ export class QuestionList extends Component {
 	render() {
 		return (
 			<div>
-				{this.renderQuestionsList()}
+				{this.renderSearchResultsList()}
 				<NewSolutionModal show={this.state.modalShow} onHide={this.modalClose} question={this.state.currentlySelectedQuestion} />
 			</div>
 		)
@@ -39,7 +32,8 @@ export class QuestionList extends Component {
 }
 
 const mapStateToProps = state => {
-	return { questions: Object.values(state.questions).sort((a, b) => b._id - a._id), users: state.users }
+	let { filterOrSearchResults, users } = state
+	return { filterOrSearchResults, users }
 }
 
-export default connect(mapStateToProps, { fetchQuestions })(QuestionList)
+export default connect(mapStateToProps)(ResultsList)
