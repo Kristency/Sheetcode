@@ -34,15 +34,25 @@ export class QuestionList extends Component {
 		))
 	}
 
-	render() {
-		return (
-			<div>
-				{this.renderQuestionsList()}
+	renderLoadMoreButton() {
+		if (this.props.questions.length === 0) {
+			return null
+		} else {
+			return (
 				<div className="row justify-content-center mx-0">
 					<Button onClick={this.props.fetchQuestions} className="my-4 justify-content-center" variant="outline-dark" size="lg">
 						Load More
 					</Button>
 				</div>
+			)
+		}
+	}
+
+	render() {
+		return (
+			<div>
+				{this.renderQuestionsList()}
+				{this.renderLoadMoreButton()}
 				<NewSolutionModal show={this.state.modalShow} onHide={this.modalClose} question={this.state.currentlySelectedQuestion} />
 			</div>
 		)
