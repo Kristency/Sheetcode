@@ -6,18 +6,12 @@ import { fetchFilterResults } from '../actions'
 import './App.css'
 
 export class FilterQuestionsForm extends Component {
-	renderError({ touched, error }) {
-		if (touched && error) {
-			return <small className="form-text text-danger">{error}</small>
-		}
-	}
-
 	renderCategoryDropDownSelect = ({ input, label, meta }) => {
 		return (
 			<div className="mt-4">
 				<label>{label}</label>&nbsp;&nbsp;&nbsp;
 				<select {...input} className="form-control">
-					<option value="">Select</option>
+					<option value="All">All</option>
 					<option value="Array">Array</option>
 					<option value="DP">DP</option>
 					<option value="String">String</option>
@@ -36,7 +30,6 @@ export class FilterQuestionsForm extends Component {
 					<option value="Sorting">Sorting</option>
 					<option value="Miscellaneous">Miscellaneous</option>
 				</select>
-				{this.renderError(meta)}
 			</div>
 		)
 	}
@@ -83,19 +76,8 @@ export class FilterQuestionsForm extends Component {
 	}
 }
 
-const validate = formValues => {
-	const errors = {}
-
-	if (!formValues.category) {
-		errors.category = 'Please select a category.'
-	}
-
-	return errors
-}
-
 const formWrapped = reduxForm({
-	form: 'filterDetails',
-	validate
+	form: 'filterDetails'
 })(FilterQuestionsForm)
 
 export default connect(null, { fetchFilterResults })(formWrapped)

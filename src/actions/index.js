@@ -1,4 +1,13 @@
-import { FETCH_USERS, FETCH_QUESTIONS, ADD_QUESTION, ADD_SOLUTION, FETCH_SEARCH_RESULTS, FETCH_FILTER_RESULTS } from './types'
+import {
+	FETCH_USERS,
+	FETCH_QUESTIONS,
+	ADD_QUESTION,
+	ADD_SOLUTION,
+	FETCH_SEARCH_RESULTS,
+	FETCH_FILTER_RESULTS,
+	UPDATE_ROW_RANGE,
+	FETCH_QUESTION_COUNT
+} from './types'
 
 import sheetcodeApi from '../apis/sheetcode-api'
 import history from '../history'
@@ -14,10 +23,31 @@ export const fetchUsers = () => {
 }
 
 export const fetchQuestions = () => {
-	return async dispatch => {
-		const response = await sheetcodeApi.get('/questions')
+	/* Calling action creator inside another action creator because I want the questionCount before I can
+		fetch the questions, so dispatching the fetchQuestionCount() action creator first, then waiting until
+		the state gets populated, then dispatching the fetchQuestions() action creator. */
+	return async (dispatch, getState) => {
+		if (!getState().rows.questionCount) {
+			await dispatch(fetchQuestionCount())
+		}
+		const { startRow, endRow } = getState().rows
+		const response = await sheetcodeApi.get(`/questions?start_row=${startRow}&end_row=${endRow}`)
 		dispatch({
 			type: FETCH_QUESTIONS,
+			payload: response.data
+		})
+
+		dispatch({
+			type: UPDATE_ROW_RANGE
+		})
+	}
+}
+
+export const fetchQuestionCount = () => {
+	return async dispatch => {
+		const response = await sheetcodeApi.get('/questions/count')
+		dispatch({
+			type: FETCH_QUESTION_COUNT,
 			payload: response.data
 		})
 	}
@@ -55,7 +85,7 @@ export const fetchSearchResults = term => {
 }
 
 export const fetchFilterResults = formValues => {
-	let query_category = 'category' in formValues ? `category=${formValues.category}` : ``
+	let query_category = 'category' in formValues && formValues.category !== 'All' ? `category=${formValues.category}` : ``
 	let query_difficulty = 'difficulty' in formValues && formValues.difficulty !== 'All' ? `&difficulty=${formValues.difficulty}` : ``
 
 	return async dispatch => {

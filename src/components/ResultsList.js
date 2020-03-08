@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import NewSolutionModal from './NewSolutionModal'
 import QuestionCard from './QuestionCard'
 
+import NoResults from './no_results.png'
+
 export class ResultsList extends Component {
 	state = { modalShow: false, currentlySelectedQuestion: null }
 
@@ -16,14 +18,22 @@ export class ResultsList extends Component {
 	}
 
 	renderSearchResultsList() {
-		return this.props.filterOrSearchResults.map(question => (
-			<QuestionCard
-				key={question._id}
-				question={question}
-				users={this.props.users}
-				onClickingPlusButton={this.setCurrentlySelectedQuestion}
-			/>
-		))
+		if (this.props.filterOrSearchResults.length === 0) {
+			return (
+				<div className="row justify-content-center mx-0 mt-5 mt-md-0">
+					<img src={NoResults} height="15%" width="55%" alt="no results" />
+				</div>
+			)
+		} else {
+			return this.props.filterOrSearchResults.map(question => (
+				<QuestionCard
+					key={question._id}
+					question={question}
+					users={this.props.users}
+					onClickingPlusButton={this.setCurrentlySelectedQuestion}
+				/>
+			))
+		}
 	}
 
 	render() {

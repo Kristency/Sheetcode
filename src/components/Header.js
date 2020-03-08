@@ -7,6 +7,7 @@ import { FaCode, FaMarker, FaFilter } from 'react-icons/fa'
 import NewQuestionModal from './NewQuestionModal'
 import FilterQuestionsModal from './FilterQuestionsModal'
 import { fetchSearchResults } from '../actions'
+import history from '../history'
 
 export class Header extends Component {
 	state = { term: '', newQuestionModalShow: false, filterQuestionModalShow: false }
@@ -20,6 +21,8 @@ export class Header extends Component {
 		// console.log(this.state.term)
 		if (this.state.term) {
 			this.props.fetchSearchResults(this.state.term)
+		} else {
+			history.push('/')
 		}
 	}
 

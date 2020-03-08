@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Button } from 'react-bootstrap'
 
 import { fetchQuestions } from '../actions'
 import NewSolutionModal from './NewSolutionModal'
@@ -37,6 +38,11 @@ export class QuestionList extends Component {
 		return (
 			<div>
 				{this.renderQuestionsList()}
+				<div className="row justify-content-center mx-0">
+					<Button onClick={this.props.fetchQuestions} className="my-4 justify-content-center" variant="outline-dark" size="lg">
+						Load More
+					</Button>
+				</div>
 				<NewSolutionModal show={this.state.modalShow} onHide={this.modalClose} question={this.state.currentlySelectedQuestion} />
 			</div>
 		)
