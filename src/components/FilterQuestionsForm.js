@@ -15,6 +15,7 @@ export class FilterQuestionsForm extends Component {
 					<option value="Array">Array</option>
 					<option value="DP">DP</option>
 					<option value="String">String</option>
+					<option value="Hash Map">Hash Map</option>
 					<option value="Greedy">Greedy</option>
 					<option value="Bit Manipulation">Bit Manipulation</option>
 					<option value="Math">Math</option>
