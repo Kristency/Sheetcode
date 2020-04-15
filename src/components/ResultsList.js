@@ -7,6 +7,8 @@ import Spinner from './Spinner'
 
 import NoResults from './no_results.png'
 
+const NO_RESULTS = 'NO_RESULTS'
+
 export class ResultsList extends Component {
 	state = { modalShow: false, currentlySelectedQuestion: null }
 
@@ -19,7 +21,7 @@ export class ResultsList extends Component {
 	}
 
 	renderSearchResultsList() {
-		if (this.props.filterOrSearchResults.length === 0) {
+		if (this.props.filterOrSearchResults[0] === NO_RESULTS) {
 			return (
 				<div className="row justify-content-center mx-0 mt-5 mt-md-0">
 					<img src={NoResults} height="15%" width="55%" alt="no results" />
