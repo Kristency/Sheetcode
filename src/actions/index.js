@@ -6,18 +6,19 @@ import {
 	FETCH_SEARCH_RESULTS,
 	FETCH_FILTER_RESULTS,
 	UPDATE_ROW_RANGE,
-	FETCH_QUESTION_COUNT
+	FETCH_QUESTION_COUNT,
+	CLEAR_PREVIOUS_RESULTS,
 } from './types'
 
 import sheetcodeApi from '../apis/sheetcode-api'
 import history from '../history'
 
 export const fetchUsers = () => {
-	return async dispatch => {
+	return async (dispatch) => {
 		const response = await sheetcodeApi.get('/users')
 		dispatch({
 			type: FETCH_USERS,
-			payload: response.data
+			payload: response.data,
 		})
 	}
 }
@@ -34,65 +35,76 @@ export const fetchQuestions = () => {
 		const response = await sheetcodeApi.get(`/questions?start_row=${startRow}&end_row=${endRow}`)
 		dispatch({
 			type: FETCH_QUESTIONS,
-			payload: response.data
+			payload: response.data,
 		})
 
 		dispatch({
-			type: UPDATE_ROW_RANGE
+			type: UPDATE_ROW_RANGE,
 		})
 	}
 }
 
 export const fetchQuestionCount = () => {
-	return async dispatch => {
+	return async (dispatch) => {
 		const response = await sheetcodeApi.get('/questions/count')
 		dispatch({
 			type: FETCH_QUESTION_COUNT,
-			payload: response.data
+			payload: response.data,
 		})
 	}
 }
 
-export const addQuestion = formValues => {
-	return async dispatch => {
+export const addQuestion = (formValues) => {
+	return async (dispatch) => {
 		const response = await sheetcodeApi.post('/questions', formValues)
 		dispatch({
 			type: ADD_QUESTION,
-			payload: response.data
+			payload: response.data,
 		})
 	}
 }
 
-export const addSolution = formValues => {
-	return async dispatch => {
+export const addSolution = (formValues) => {
+	return async (dispatch) => {
 		await sheetcodeApi.patch('/questions', formValues)
 		dispatch({
 			type: ADD_SOLUTION,
-			payload: formValues
+			payload: formValues,
 		})
 	}
 }
 
-export const fetchSearchResults = term => {
-	return async dispatch => {
+export const clearPreviousResults = () => {
+	return {
+		type: CLEAR_PREVIOUS_RESULTS,
+	}
+}
+
+export const fetchSearchResults = (term) => {
+	return async (dispatch) => {
+		dispatch(clearPreviousResults())
 		const response = await sheetcodeApi.get(`/search?search_query=${term}`)
 		dispatch({
 			type: FETCH_SEARCH_RESULTS,
-			payload: response.data
+			payload: response.data,
 		})
 		history.push('/results')
 	}
 }
 
-export const fetchFilterResults = formValues => {
+export const fetchFilterResults = (formValues) => {
 	let query_category = 'category' in formValues && formValues.category !== 'All' ? `category=${formValues.category}` : ``
 	let query_difficulty = 'difficulty' in formValues && formValues.difficulty !== 'All' ? `&difficulty=${formValues.difficulty}` : ``
 
-	return async dispatch => {
+	return async (dispatch) => {
+		/* Actions are dispatched synchronously so Redux guarantees the store has received the next state before 
+		accepting the next action. Because clearPreviousResults is synchronous, any action dispatched from asynchronous
+		fetchFilterResults is guaranteed to happen after it. */
+		dispatch(clearPreviousResults())
 		const response = await sheetcodeApi.get(`/questions?${query_category}${query_difficulty}`)
 		dispatch({
 			type: FETCH_FILTER_RESULTS,
-			payload: response.data
+			payload: response.data,
 		})
 		history.push('/results')
 	}

@@ -1,4 +1,4 @@
-import { FETCH_SEARCH_RESULTS, FETCH_FILTER_RESULTS } from '../actions/types'
+import { FETCH_SEARCH_RESULTS, FETCH_FILTER_RESULTS, CLEAR_PREVIOUS_RESULTS } from '../actions/types'
 
 export default (state = [], action) => {
 	switch (action.type) {
@@ -6,6 +6,8 @@ export default (state = [], action) => {
 			return action.payload
 		case FETCH_FILTER_RESULTS:
 			return action.payload
+		case CLEAR_PREVIOUS_RESULTS:
+			return []
 		default:
 			return state
 	}

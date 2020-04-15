@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import { fetchQuestions } from '../actions'
 import NewSolutionModal from './NewSolutionModal'
 import QuestionCard from './QuestionCard'
+import Spinner from './Spinner'
 
 export class QuestionList extends Component {
 	state = { modalShow: false, currentlySelectedQuestion: null }
@@ -19,12 +20,12 @@ export class QuestionList extends Component {
 		this.setState({ modalShow: false })
 	}
 
-	setCurrentlySelectedQuestion = question => {
+	setCurrentlySelectedQuestion = (question) => {
 		this.setState({ currentlySelectedQuestion: question, modalShow: true })
 	}
 
 	renderQuestionsList() {
-		return this.props.questions.map(question => (
+		return this.props.questions.map((question) => (
 			<QuestionCard
 				key={question._id}
 				question={question}
@@ -49,17 +50,25 @@ export class QuestionList extends Component {
 	}
 
 	render() {
-		return (
-			<div>
-				{this.renderQuestionsList()}
-				{this.renderLoadMoreButton()}
-				<NewSolutionModal show={this.state.modalShow} onHide={this.modalClose} question={this.state.currentlySelectedQuestion} />
-			</div>
-		)
+		if (this.props.questions.length > 0) {
+			return (
+				<div>
+					{this.renderQuestionsList()}
+					{this.renderLoadMoreButton()}
+					<NewSolutionModal
+						show={this.state.modalShow}
+						onHide={this.modalClose}
+						question={this.state.currentlySelectedQuestion}
+					/>
+				</div>
+			)
+		} else {
+			return <Spinner />
+		}
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return { questions: Object.values(state.questions).sort((a, b) => b._id - a._id), users: state.users }
 }
 

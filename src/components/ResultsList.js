@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import NewSolutionModal from './NewSolutionModal'
 import QuestionCard from './QuestionCard'
+import Spinner from './Spinner'
 
 import NoResults from './no_results.png'
 
@@ -13,7 +14,7 @@ export class ResultsList extends Component {
 		this.setState({ modalShow: false })
 	}
 
-	setCurrentlySelectedQuestion = question => {
+	setCurrentlySelectedQuestion = (question) => {
 		this.setState({ currentlySelectedQuestion: question, modalShow: true })
 	}
 
@@ -25,7 +26,7 @@ export class ResultsList extends Component {
 				</div>
 			)
 		} else {
-			return this.props.filterOrSearchResults.map(question => (
+			return this.props.filterOrSearchResults.map((question) => (
 				<QuestionCard
 					key={question._id}
 					question={question}
@@ -37,16 +38,24 @@ export class ResultsList extends Component {
 	}
 
 	render() {
-		return (
-			<div>
-				{this.renderSearchResultsList()}
-				<NewSolutionModal show={this.state.modalShow} onHide={this.modalClose} question={this.state.currentlySelectedQuestion} />
-			</div>
-		)
+		if (this.props.filterOrSearchResults.length > 0) {
+			return (
+				<div>
+					{this.renderSearchResultsList()}
+					<NewSolutionModal
+						show={this.state.modalShow}
+						onHide={this.modalClose}
+						question={this.state.currentlySelectedQuestion}
+					/>
+				</div>
+			)
+		} else {
+			return <Spinner />
+		}
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	let { filterOrSearchResults, users } = state
 	return { filterOrSearchResults, users }
 }
