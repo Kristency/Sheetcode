@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 
 import { addQuestion } from '../actions'
+import { categories, difficulties } from '../form-options-data'
 import './App.css'
 
 export class NewQuestionForm extends Component {
@@ -23,11 +24,17 @@ export class NewQuestionForm extends Component {
 		)
 	}
 
-	renderUserSelectOptions = user => (
+	renderUserSelectOptions = (user) => (
 		<option key={user._id} value={user._id}>
 			{user.name}
 		</option>
 	)
+
+	renderDifficultyOptions() {
+		return difficulties.map((difficulty) => {
+			return <option value={difficulty}>{difficulty}</option>
+		})
+	}
 
 	renderDifficultyDropDownSelect = ({ input, label, meta }) => {
 		return (
@@ -35,13 +42,17 @@ export class NewQuestionForm extends Component {
 				<label>{label}</label>&nbsp;&nbsp;&nbsp;
 				<select {...input} className="form-control">
 					<option value="">Select</option>
-					<option value="Easy">Easy</option>
-					<option value="Medium">Medium</option>
-					<option value="Hard">Hard</option>
+					{this.renderDifficultyOptions()}
 				</select>
 				{this.renderError(meta)}
 			</div>
 		)
+	}
+
+	renderCategoryOptions() {
+		return categories.map((category) => {
+			return <option value={category}>{category}</option>
+		})
 	}
 
 	renderCategoryDropDownSelect = ({ input, label, meta }) => {
@@ -50,24 +61,7 @@ export class NewQuestionForm extends Component {
 				<label>{label}</label>&nbsp;&nbsp;&nbsp;
 				<select {...input} className="form-control">
 					<option value="">Select</option>
-					<option value="Array">Array</option>
-					<option value="DP">DP</option>
-					<option value="String">String</option>
-					<option value="Hash Map">Hash Map</option>
-					<option value="Greedy">Greedy</option>
-					<option value="Bit Manipulation">Bit Manipulation</option>
-					<option value="Math">Math</option>
-					<option value="Search">Search</option>
-					<option value="Linked List">Linked List</option>
-					<option value="Stack">Stack</option>
-					<option value="Graph">Graph</option>
-					<option value="Recursion">Recursion</option>
-					<option value="Binary Tree">Binary Tree</option>
-					<option value="Heap">Heap</option>
-					<option value="Binary Search">Binary Search</option>
-					<option value="Trees">Trees</option>
-					<option value="Sorting">Sorting</option>
-					<option value="Miscellaneous">Miscellaneous</option>
+					{this.renderCategoryOptions()}
 				</select>
 				{this.renderError(meta)}
 			</div>
@@ -87,7 +81,7 @@ export class NewQuestionForm extends Component {
 		)
 	}
 
-	onSubmit = formValues => {
+	onSubmit = (formValues) => {
 		this.props.addQuestion(formValues)
 		this.props.functionToCallAfterFormSubmitToCloseModal()
 	}
@@ -136,7 +130,7 @@ export class NewQuestionForm extends Component {
 	}
 }
 
-const validate = formValues => {
+const validate = (formValues) => {
 	const errors = {}
 
 	if (!formValues.name) {
@@ -161,15 +155,15 @@ const validate = formValues => {
 	return errors
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return {
-		users: Object.values(state.users)
+		users: Object.values(state.users),
 	}
 }
 
 const formWrapped = reduxForm({
 	form: 'newQuestionDetails',
-	validate
+	validate,
 })(NewQuestionForm)
 
 export default connect(mapStateToProps, { addQuestion })(formWrapped)
