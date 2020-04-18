@@ -18,6 +18,7 @@ export class FilterQuestionsForm extends Component {
 			<div className="mt-4">
 				<label>{label}</label>&nbsp;&nbsp;&nbsp;
 				<select {...input} className="form-control">
+					<option value="All">All</option>
 					{this.renderCategoryOptions()}
 				</select>
 			</div>
@@ -35,6 +36,7 @@ export class FilterQuestionsForm extends Component {
 			<div className="mt-4">
 				<label>{label}</label>&nbsp;&nbsp;&nbsp;
 				<select {...input} className="form-control">
+					<option value="All">All</option>
 					{this.renderDifficultyOptions()}
 				</select>
 			</div>

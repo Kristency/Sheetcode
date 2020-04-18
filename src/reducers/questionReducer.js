@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { FETCH_QUESTIONS, ADD_QUESTION, ADD_SOLUTION } from '../actions/types'
+import { FETCH_QUESTIONS, ADD_QUESTION, ADD_SOLUTION, UPDATE_QUESTION_DETAILS } from '../actions/types'
 
 export default (state = {}, action) => {
 	switch (action.type) {
@@ -13,7 +13,7 @@ export default (state = {}, action) => {
 			}
 
 			return { ...state, [action.payload._id]: action.payload }
-		case ADD_SOLUTION:
+		case ADD_SOLUTION: {
 			let { _id, solution_link: link, user_column } = action.payload
 			for (let solution of state[_id].solutions) {
 				if (solution.user_column === user_column) {
@@ -24,6 +24,14 @@ export default (state = {}, action) => {
 
 			state[_id].solutions.push({ link, user_column })
 			return { ...state }
+		}
+
+		case UPDATE_QUESTION_DETAILS: {
+			let { _id, problem_link: link, name } = action.payload
+			state[_id].link = link
+			state[_id].name = name
+			return { ...state }
+		}
 
 		default:
 			return state

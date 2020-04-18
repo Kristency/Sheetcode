@@ -4,11 +4,17 @@ import { Button } from 'react-bootstrap'
 
 import { fetchQuestions } from '../actions'
 import NewSolutionModal from './NewSolutionModal'
+import EditQuestionDetailsModal from './EditQuestionDetailsModal'
 import QuestionCard from './QuestionCard'
 import Spinner from './Spinner'
 
 export class QuestionList extends Component {
-	state = { modalShow: false, currentlySelectedQuestion: null }
+	state = {
+		newSolutionModalShow: false,
+		editQuestionModalShow: false,
+		currentlySelectedQuestionForSolution: null,
+		currentlySelectedQuestionForEdit: null,
+	}
 
 	componentDidMount() {
 		if (this.props.questions.length === 0) {
@@ -16,12 +22,22 @@ export class QuestionList extends Component {
 		}
 	}
 
-	modalClose = () => {
-		this.setState({ modalShow: false })
+	newSolutionModalClose = () => {
+		this.setState({ newSolutionModalShow: false })
 	}
 
-	setCurrentlySelectedQuestion = (question) => {
-		this.setState({ currentlySelectedQuestion: question, modalShow: true })
+	editQuestionModalClose = () => {
+		this.setState({ editQuestionModalShow: false })
+	}
+
+	setCurrentlySelectedQuestionForSolution = (question) => {
+		console.log(question)
+		this.setState({ currentlySelectedQuestionForSolution: question, newSolutionModalShow: true })
+	}
+
+	setCurrentlySelectedQuestionForEdit = (question) => {
+		console.log(question)
+		this.setState({ currentlySelectedQuestionForEdit: question, editQuestionModalShow: true })
 	}
 
 	renderQuestionsList() {
@@ -30,7 +46,8 @@ export class QuestionList extends Component {
 				key={question._id}
 				question={question}
 				users={this.props.users}
-				onClickingPlusButton={this.setCurrentlySelectedQuestion}
+				onClickingPlusButton={this.setCurrentlySelectedQuestionForSolution}
+				onClickingEditButton={this.setCurrentlySelectedQuestionForEdit}
 			/>
 		))
 	}
@@ -56,9 +73,14 @@ export class QuestionList extends Component {
 					{this.renderQuestionsList()}
 					{this.renderLoadMoreButton()}
 					<NewSolutionModal
-						show={this.state.modalShow}
-						onHide={this.modalClose}
-						question={this.state.currentlySelectedQuestion}
+						show={this.state.newSolutionModalShow}
+						onHide={this.newSolutionModalClose}
+						question={this.state.currentlySelectedQuestionForSolution}
+					/>
+					<EditQuestionDetailsModal
+						show={this.state.editQuestionModalShow}
+						onHide={this.editQuestionModalClose}
+						question={this.state.currentlySelectedQuestionForEdit}
 					/>
 				</div>
 			)

@@ -8,6 +8,7 @@ import {
 	UPDATE_ROW_RANGE,
 	FETCH_QUESTION_COUNT,
 	CLEAR_PREVIOUS_RESULTS,
+	UPDATE_QUESTION_DETAILS,
 } from './types'
 
 import sheetcodeApi from '../apis/sheetcode-api'
@@ -66,9 +67,19 @@ export const addQuestion = (formValues) => {
 
 export const addSolution = (formValues) => {
 	return async (dispatch) => {
-		await sheetcodeApi.patch('/questions', formValues)
+		await sheetcodeApi.patch('/questions/add_solution', formValues)
 		dispatch({
 			type: ADD_SOLUTION,
+			payload: formValues,
+		})
+	}
+}
+
+export const updateQuestionDetails = (formValues) => {
+	return async (dispatch) => {
+		await sheetcodeApi.patch('/questions/update_question', formValues)
+		dispatch({
+			type: UPDATE_QUESTION_DETAILS,
 			payload: formValues,
 		})
 	}

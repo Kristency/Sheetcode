@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Card, Badge, Button } from 'react-bootstrap'
-import { FaRegStar } from 'react-icons/fa'
+import { FaRegEdit } from 'react-icons/fa'
 
 const difficultyColor = {
 	Easy: 'success',
 	Medium: 'warning',
-	Hard: 'danger'
+	Hard: 'danger',
 }
 
 export class QuestionCard extends Component {
@@ -18,7 +18,7 @@ export class QuestionCard extends Component {
 	}
 
 	render() {
-		let { question, onClickingPlusButton } = this.props
+		let { question, onClickingPlusButton, onClickingEditButton } = this.props
 
 		return (
 			<Card body>
@@ -28,7 +28,7 @@ export class QuestionCard extends Component {
 							<h5 className="d-inline">{question.name}</h5>
 						</a>
 						<h5 className="d-inline ml-1 ml-md-3 align-top">
-							<FaRegStar />
+							<FaRegEdit className="pointer" onClick={() => onClickingEditButton(question)} />
 						</h5>
 					</div>
 					<div className="col-md-3">
@@ -43,7 +43,7 @@ export class QuestionCard extends Component {
 					</div>
 					<div className="col-md-5">
 						<h5 className="d-inline">
-							{question.solutions.map(solution => {
+							{question.solutions.map((solution) => {
 								return (
 									<Badge
 										key={solution.user_column}

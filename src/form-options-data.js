@@ -1,5 +1,4 @@
 export const categories = [
-	'All',
 	'Array',
 	'DP',
 	'String',
@@ -20,4 +19,4 @@ export const categories = [
 	'Miscellaneous',
 ]
 
-export const difficulties = ['All', 'Easy', 'Medium', 'Hard']
+export const difficulties = ['Easy', 'Medium', 'Hard']
