@@ -31,12 +31,10 @@ class QuestionList extends Component {
 	}
 
 	setCurrentlySelectedQuestionForSolution = (question) => {
-		console.log(question)
 		this.setState({ currentlySelectedQuestionForSolution: question, newSolutionModalShow: true })
 	}
 
 	setCurrentlySelectedQuestionForEdit = (question) => {
-		console.log(question)
 		this.setState({ currentlySelectedQuestionForEdit: question, editQuestionModalShow: true })
 	}
 
