@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 
 import EditQuestionDetailsForm from './EditQuestionDetailsForm'
 
-export class EditQuestionDetailsModal extends Component {
+class EditQuestionDetailsModal extends Component {
 	render() {
 		return (
 			<Modal

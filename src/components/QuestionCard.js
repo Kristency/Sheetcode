@@ -8,7 +8,7 @@ const difficultyColor = {
 	Hard: 'danger',
 }
 
-export class QuestionCard extends Component {
+class QuestionCard extends Component {
 	renderUser(user_column) {
 		if (user_column in this.props.users) {
 			return this.props.users[user_column].name

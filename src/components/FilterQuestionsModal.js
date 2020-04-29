@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 
 import FilterQuestionsForm from './FilterQuestionsForm'
 
-export class FilterQuestionsModal extends Component {
+class FilterQuestionsModal extends Component {
 	render() {
 		return (
 			<Modal

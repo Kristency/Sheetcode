@@ -6,7 +6,7 @@ import { fetchFilterResults } from '../actions'
 import { categories, difficulties } from '../form-options-data'
 import './App.css'
 
-export class FilterQuestionsForm extends Component {
+class FilterQuestionsForm extends Component {
 	renderCategoryOptions() {
 		return categories.map((category) => {
 			return <option value={category}>{category}</option>

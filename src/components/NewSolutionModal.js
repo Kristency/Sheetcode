@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 
 import NewSolutionForm from './NewSolutionForm'
 
-export class NewSolutionModal extends Component {
+class NewSolutionModal extends Component {
 	render() {
 		return (
 			<Modal

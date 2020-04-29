@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { updateQuestionDetails } from '../actions'
 import './App.css'
 
-export class EditQuestionDetailsForm extends Component {
+class EditQuestionDetailsForm extends Component {
 	renderError({ touched, error }) {
 		if (touched && error) {
 			return <small className="form-text text-danger">{error}</small>

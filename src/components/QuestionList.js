@@ -8,7 +8,7 @@ import EditQuestionDetailsModal from './EditQuestionDetailsModal'
 import QuestionCard from './QuestionCard'
 import Spinner from './Spinner'
 
-export class QuestionList extends Component {
+class QuestionList extends Component {
 	state = {
 		newSolutionModalShow: false,
 		editQuestionModalShow: false,

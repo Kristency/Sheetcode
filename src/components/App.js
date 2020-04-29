@@ -9,7 +9,7 @@ import QuestionList from './QuestionList'
 import ResultsList from './ResultsList'
 import Header from './Header'
 
-export class App extends Component {
+class App extends Component {
 	componentDidMount() {
 		this.props.fetchUsers()
 	}

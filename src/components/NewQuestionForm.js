@@ -6,7 +6,7 @@ import { addQuestion } from '../actions'
 import { categories, difficulties } from '../form-options-data'
 import './App.css'
 
-export class NewQuestionForm extends Component {
+class NewQuestionForm extends Component {
 	renderError({ touched, error }) {
 		if (touched && error) {
 			return <small className="form-text text-danger">{error}</small>

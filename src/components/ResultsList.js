@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import NewSolutionModal from './NewSolutionModal'
+import EditQuestionDetailsModal from './EditQuestionDetailsModal'
 import QuestionCard from './QuestionCard'
 import Spinner from './Spinner'
 
@@ -9,15 +10,30 @@ import NoResults from './no_results.png'
 
 const NO_RESULTS = 'NO_RESULTS'
 
-export class ResultsList extends Component {
-	state = { modalShow: false, currentlySelectedQuestion: null }
-
-	modalClose = () => {
-		this.setState({ modalShow: false })
+class ResultsList extends Component {
+	state = {
+		newSolutionModalShow: false,
+		editQuestionModalShow: false,
+		currentlySelectedQuestionForSolution: null,
+		currentlySelectedQuestionForEdit: null,
 	}
 
-	setCurrentlySelectedQuestion = (question) => {
-		this.setState({ currentlySelectedQuestion: question, modalShow: true })
+	newSolutionModalClose = () => {
+		this.setState({ newSolutionModalShow: false })
+	}
+
+	editQuestionModalClose = () => {
+		this.setState({ editQuestionModalShow: false })
+	}
+
+	setCurrentlySelectedQuestionForSolution = (question) => {
+		console.log(question)
+		this.setState({ currentlySelectedQuestionForSolution: question, newSolutionModalShow: true })
+	}
+
+	setCurrentlySelectedQuestionForEdit = (question) => {
+		console.log(question)
+		this.setState({ currentlySelectedQuestionForEdit: question, editQuestionModalShow: true })
 	}
 
 	renderSearchResultsList() {
@@ -33,7 +49,8 @@ export class ResultsList extends Component {
 					key={question._id}
 					question={question}
 					users={this.props.users}
-					onClickingPlusButton={this.setCurrentlySelectedQuestion}
+					onClickingPlusButton={this.setCurrentlySelectedQuestionForSolution}
+					onClickingEditButton={this.setCurrentlySelectedQuestionForEdit}
 				/>
 			))
 		}
@@ -45,9 +62,14 @@ export class ResultsList extends Component {
 				<div>
 					{this.renderSearchResultsList()}
 					<NewSolutionModal
-						show={this.state.modalShow}
-						onHide={this.modalClose}
-						question={this.state.currentlySelectedQuestion}
+						show={this.state.newSolutionModalShow}
+						onHide={this.newSolutionModalClose}
+						question={this.state.currentlySelectedQuestionForSolution}
+					/>
+					<EditQuestionDetailsModal
+						show={this.state.editQuestionModalShow}
+						onHide={this.editQuestionModalClose}
+						question={this.state.currentlySelectedQuestionForEdit}
 					/>
 				</div>
 			)

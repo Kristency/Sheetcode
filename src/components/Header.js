@@ -9,14 +9,14 @@ import FilterQuestionsModal from './FilterQuestionsModal'
 import { fetchSearchResults } from '../actions'
 import history from '../history'
 
-export class Header extends Component {
+class Header extends Component {
 	state = { term: '', newQuestionModalShow: false, filterQuestionModalShow: false }
 
-	onInputChange = event => {
+	onInputChange = (event) => {
 		this.setState({ term: event.target.value })
 	}
 
-	onFormSubmit = event => {
+	onFormSubmit = (event) => {
 		event.preventDefault()
 		// console.log(this.state.term)
 		if (this.state.term) {

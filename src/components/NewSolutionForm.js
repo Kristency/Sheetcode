@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { addSolution } from '../actions'
 import './App.css'
 
-export class NewSolutionForm extends Component {
+class NewSolutionForm extends Component {
 	renderError({ touched, error }) {
 		if (touched && error) {
 			return <small className="form-text text-danger">{error}</small>
@@ -23,7 +23,7 @@ export class NewSolutionForm extends Component {
 		)
 	}
 
-	renderUserSelectOptions = user => (
+	renderUserSelectOptions = (user) => (
 		<option key={user._id} value={user._id}>
 			{user.name}
 		</option>
@@ -42,7 +42,7 @@ export class NewSolutionForm extends Component {
 		)
 	}
 
-	onSubmit = formValues => {
+	onSubmit = (formValues) => {
 		this.props.addSolution({ ...formValues, _id: this.props.question._id })
 		this.props.functionToCallAfterFormSubmitToCloseModal()
 	}
@@ -77,7 +77,7 @@ export class NewSolutionForm extends Component {
 	}
 }
 
-const validate = formValues => {
+const validate = (formValues) => {
 	const errors = {}
 
 	if (!formValues.user_column) {
@@ -90,15 +90,15 @@ const validate = formValues => {
 	return errors
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return {
-		users: Object.values(state.users)
+		users: Object.values(state.users),
 	}
 }
 
 const formWrapped = reduxForm({
 	form: 'newSolutionDetails',
-	validate
+	validate,
 })(NewSolutionForm)
 
 export default connect(mapStateToProps, { addSolution })(formWrapped)
