@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 
 import { SignIn, SignOut } from '../actions'
 
-// const REACT_APP_GOOGLE_OAUTH_CLIENTID = '201916936904-0mmbao2ahjgrqp0ndfceguflga7tu6va.apps.googleusercontent.com'
-
 class GoogleAuth extends React.Component {
 	componentDidMount() {
 		window.gapi.load('client:auth2', () => {
