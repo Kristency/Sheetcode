@@ -1,5 +1,6 @@
 import {
-	FETCH_USERS,
+	SIGN_IN,
+	SIGN_OUT,
 	FETCH_QUESTIONS,
 	ADD_QUESTION,
 	ADD_SOLUTION,
@@ -9,18 +10,41 @@ import {
 	FETCH_QUESTION_COUNT,
 	CLEAR_PREVIOUS_RESULTS,
 	UPDATE_QUESTION_DETAILS,
+	ERROR
 } from './types'
 
 import sheetcodeApi from '../apis/sheetcode-api'
 import history from '../history'
 
-export const fetchUsers = () => {
+export const SignIn = (email) => {
 	return async (dispatch) => {
-		const response = await sheetcodeApi.get('/users')
-		dispatch({
-			type: FETCH_USERS,
-			payload: response.data,
-		})
+		try {
+			const response = await sheetcodeApi.get(`/user?email=${email}`)
+			if (!response.data) {
+				dispatch({
+					type: ERROR,
+					payload: `You don't have write access to this site.`
+				})
+				history.push('/error')
+			} else {
+				dispatch({
+					type: SIGN_IN,
+					payload: response.data
+				})
+			}
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
+	}
+}
+
+export const SignOut = () => {
+	return {
+		type: SIGN_OUT
 	}
 }
 
@@ -33,73 +57,127 @@ export const fetchQuestions = () => {
 			await dispatch(fetchQuestionCount())
 		}
 		const { startRow, endRow } = getState().rows
-		const response = await sheetcodeApi.get(`/questions?start_row=${startRow}&end_row=${endRow}`)
-		dispatch({
-			type: FETCH_QUESTIONS,
-			payload: response.data,
-		})
+		try {
+			const response = await sheetcodeApi.get(`/questions?start_row=${startRow}&end_row=${endRow}`)
+			dispatch({
+				type: FETCH_QUESTIONS,
+				payload: response.data
+			})
 
-		dispatch({
-			type: UPDATE_ROW_RANGE,
-		})
+			dispatch({
+				type: UPDATE_ROW_RANGE
+			})
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
 	}
 }
 
 export const fetchQuestionCount = () => {
 	return async (dispatch) => {
-		const response = await sheetcodeApi.get('/questions/count')
-		dispatch({
-			type: FETCH_QUESTION_COUNT,
-			payload: response.data,
-		})
+		try {
+			const response = await sheetcodeApi.get('/questions/count')
+			dispatch({
+				type: FETCH_QUESTION_COUNT,
+				payload: response.data
+			})
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
 	}
 }
 
 export const addQuestion = (formValues) => {
-	return async (dispatch) => {
-		const response = await sheetcodeApi.post('/questions', formValues)
-		dispatch({
-			type: ADD_QUESTION,
-			payload: response.data,
-		})
+	return async (dispatch, getState) => {
+		const { name, _id } = getState().auth
+		formValues['user_name'] = name
+		formValues['user_column'] = _id
+		try {
+			const response = await sheetcodeApi.post('/questions', formValues)
+			dispatch({
+				type: ADD_QUESTION,
+				payload: response.data
+			})
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
 	}
 }
 
 export const addSolution = (formValues) => {
-	return async (dispatch) => {
-		await sheetcodeApi.patch('/questions/add_solution', formValues)
-		dispatch({
-			type: ADD_SOLUTION,
-			payload: formValues,
-		})
+	return async (dispatch, getState) => {
+		const { name, _id } = getState().auth
+		formValues['user_name'] = name
+		formValues['user_column'] = _id
+		try {
+			await sheetcodeApi.patch('/questions/add_solution', formValues)
+			dispatch({
+				type: ADD_SOLUTION,
+				payload: formValues
+			})
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
 	}
 }
 
 export const updateQuestionDetails = (formValues) => {
 	return async (dispatch) => {
-		await sheetcodeApi.patch('/questions/update_question', formValues)
-		dispatch({
-			type: UPDATE_QUESTION_DETAILS,
-			payload: formValues,
-		})
+		try {
+			await sheetcodeApi.patch('/questions/update_question', formValues)
+			dispatch({
+				type: UPDATE_QUESTION_DETAILS,
+				payload: formValues
+			})
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
 	}
 }
 
 export const clearPreviousResults = () => {
 	return {
-		type: CLEAR_PREVIOUS_RESULTS,
+		type: CLEAR_PREVIOUS_RESULTS
 	}
 }
 
 export const fetchSearchResults = (term) => {
 	return async (dispatch) => {
 		dispatch(clearPreviousResults())
-		const response = await sheetcodeApi.get(`/search?search_query=${term}`)
-		dispatch({
-			type: FETCH_SEARCH_RESULTS,
-			payload: response.data,
-		})
-		history.push('/results')
+		try {
+			const response = await sheetcodeApi.get(`/search?search_query=${term}`)
+			dispatch({
+				type: FETCH_SEARCH_RESULTS,
+				payload: response.data
+			})
+			history.push('/results')
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
 	}
 }
 
@@ -112,11 +190,19 @@ export const fetchFilterResults = (formValues) => {
 		accepting the next action. Because clearPreviousResults is synchronous, any action dispatched from asynchronous
 		fetchFilterResults is guaranteed to happen after it. */
 		dispatch(clearPreviousResults())
-		const response = await sheetcodeApi.get(`/questions?${query_category}${query_difficulty}`)
-		dispatch({
-			type: FETCH_FILTER_RESULTS,
-			payload: response.data,
-		})
-		history.push('/results')
+		try {
+			const response = await sheetcodeApi.get(`/questions?${query_category}${query_difficulty}`)
+			dispatch({
+				type: FETCH_FILTER_RESULTS,
+				payload: response.data
+			})
+			history.push('/results')
+		} catch (err) {
+			dispatch({
+				type: ERROR,
+				payload: err.message
+			})
+			history.push('/error')
+		}
 	}
 }

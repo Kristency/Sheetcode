@@ -15,7 +15,7 @@ class ResultsList extends Component {
 		newSolutionModalShow: false,
 		editQuestionModalShow: false,
 		currentlySelectedQuestionForSolution: null,
-		currentlySelectedQuestionForEdit: null,
+		currentlySelectedQuestionForEdit: null
 	}
 
 	newSolutionModalClose = () => {
@@ -46,7 +46,6 @@ class ResultsList extends Component {
 				<QuestionCard
 					key={question._id}
 					question={question}
-					users={this.props.users}
 					onClickingPlusButton={this.setCurrentlySelectedQuestionForSolution}
 					onClickingEditButton={this.setCurrentlySelectedQuestionForEdit}
 				/>
@@ -78,8 +77,8 @@ class ResultsList extends Component {
 }
 
 const mapStateToProps = (state) => {
-	let { filterOrSearchResults, users } = state
-	return { filterOrSearchResults, users }
+	let { filterOrSearchResults } = state
+	return { filterOrSearchResults }
 }
 
 export default connect(mapStateToProps)(ResultsList)

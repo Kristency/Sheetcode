@@ -13,7 +13,7 @@ class QuestionList extends Component {
 		newSolutionModalShow: false,
 		editQuestionModalShow: false,
 		currentlySelectedQuestionForSolution: null,
-		currentlySelectedQuestionForEdit: null,
+		currentlySelectedQuestionForEdit: null
 	}
 
 	componentDidMount() {
@@ -43,7 +43,6 @@ class QuestionList extends Component {
 			<QuestionCard
 				key={question._id}
 				question={question}
-				users={this.props.users}
 				onClickingPlusButton={this.setCurrentlySelectedQuestionForSolution}
 				onClickingEditButton={this.setCurrentlySelectedQuestionForEdit}
 			/>
@@ -89,7 +88,7 @@ class QuestionList extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { questions: Object.values(state.questions).sort((a, b) => b._id - a._id), users: state.users }
+	return { questions: Object.values(state.questions).sort((a, b) => b._id - a._id) }
 }
 
 export default connect(mapStateToProps, { fetchQuestions })(QuestionList)

@@ -14,7 +14,7 @@ export default (state = {}, action) => {
 
 			return { ...state, [action.payload._id]: action.payload }
 		case ADD_SOLUTION: {
-			let { _id, solution_link: link, user_column } = action.payload
+			let { _id, solution_link: link, user_column, user_name } = action.payload
 			for (let solution of state[_id].solutions) {
 				if (solution.user_column === user_column) {
 					solution.link = link
@@ -22,7 +22,7 @@ export default (state = {}, action) => {
 				}
 			}
 
-			state[_id].solutions.push({ link, user_column })
+			state[_id].solutions.push({ link, user_column, user_name })
 			return { ...state }
 		}
 

@@ -1,24 +1,45 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Card, Badge, Button } from 'react-bootstrap'
 import { FaRegEdit } from 'react-icons/fa'
+
+// import SignInPrompt from '../SignInPrompt'
 
 const difficultyColor = {
 	Easy: 'success',
 	Medium: 'warning',
-	Hard: 'danger',
+	Hard: 'danger'
 }
 
 class QuestionCard extends Component {
-	renderUser(user_column) {
-		if (user_column in this.props.users) {
-			return this.props.users[user_column].name
+	renderQuestionEditButton() {
+		let { question, onClickingEditButton } = this.props
+		if (this.props.isSignedIn) {
+			return (
+				<h5 className="d-inline ml-1 ml-md-3 align-top">
+					<FaRegEdit className="pointer" onClick={() => onClickingEditButton(question)} />
+				</h5>
+			)
+		} else {
+			return null
+		}
+	}
+
+	renderSolutionAddButton() {
+		let { question, onClickingPlusButton } = this.props
+		if (this.props.isSignedIn) {
+			return (
+				<Badge as={Button} onClick={() => onClickingPlusButton(question)} pill className="ml-1 ml-md-3" variant="primary">
+					+
+				</Badge>
+			)
 		} else {
 			return null
 		}
 	}
 
 	render() {
-		let { question, onClickingPlusButton, onClickingEditButton } = this.props
+		let { question } = this.props
 
 		return (
 			<Card body>
@@ -27,9 +48,7 @@ class QuestionCard extends Component {
 						<a href={question.link} target="_blank" rel="noopener noreferrer">
 							<h5 className="d-inline">{question.name}</h5>
 						</a>
-						<h5 className="d-inline ml-1 ml-md-3 align-top">
-							<FaRegEdit className="pointer" onClick={() => onClickingEditButton(question)} />
-						</h5>
+						{this.renderQuestionEditButton()}
 					</div>
 					<div className="col-md-3">
 						<h5 className="d-inline">
@@ -55,19 +74,11 @@ class QuestionCard extends Component {
 										className="ml-md-3"
 										variant="info"
 									>
-										{this.renderUser(solution.user_column)}
+										{solution.user_name}
 									</Badge>
 								)
 							})}
-							<Badge
-								as={Button}
-								onClick={() => onClickingPlusButton(question)}
-								pill
-								className="ml-1 ml-md-3"
-								variant="primary"
-							>
-								+
-							</Badge>
+							{this.renderSolutionAddButton()}
 						</h5>
 					</div>
 				</div>
@@ -76,4 +87,10 @@ class QuestionCard extends Component {
 	}
 }
 
-export default QuestionCard
+const mapStateToProps = (state) => {
+	return {
+		isSignedIn: state.auth.isSignedIn
+	}
+}
+
+export default connect(mapStateToProps)(QuestionCard)

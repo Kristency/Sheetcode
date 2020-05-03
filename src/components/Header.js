@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap'
 import { FaCode, FaMarker, FaFilter } from 'react-icons/fa'
 
+import GoogleAuth from './GoogleAuth'
 import NewQuestionModal from './NewQuestionModal'
 import FilterQuestionsModal from './FilterQuestionsModal'
 import { fetchSearchResults } from '../actions'
@@ -63,6 +64,7 @@ class Header extends Component {
 							Search
 						</Button>
 					</Form>
+					<GoogleAuth />
 				</Navbar.Collapse>
 				<NewQuestionModal show={this.state.newQuestionModalShow} onHide={this.newQuestionModalClose} />
 				<FilterQuestionsModal show={this.state.filterQuestionModalShow} onHide={this.filterQuestionModalClose} />

@@ -1,19 +1,14 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Router, Route, Switch } from 'react-router-dom'
 
 import history from '../history'
-import { fetchUsers } from '../actions'
 
 import QuestionList from './QuestionList'
 import ResultsList from './ResultsList'
 import Header from './Header'
+import Error from './Error'
 
 class App extends Component {
-	componentDidMount() {
-		this.props.fetchUsers()
-	}
-
 	render() {
 		return (
 			<div className="container-fluid px-0">
@@ -23,6 +18,7 @@ class App extends Component {
 						<Switch>
 							<Route path="/" exact component={QuestionList} />
 							<Route path="/results" exact component={ResultsList} />
+							<Route path="/error" exact component={Error} />
 						</Switch>
 					</div>
 				</Router>
@@ -31,4 +27,4 @@ class App extends Component {
 	}
 }
 
-export default connect(null, { fetchUsers })(App)
+export default App
