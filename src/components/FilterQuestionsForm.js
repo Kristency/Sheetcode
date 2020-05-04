@@ -9,7 +9,11 @@ import './App.css'
 class FilterQuestionsForm extends Component {
 	renderCategoryOptions() {
 		return categories.map((category) => {
-			return <option value={category}>{category}</option>
+			return (
+				<option value={category} key={category}>
+					{category}
+				</option>
+			)
 		})
 	}
 
@@ -27,7 +31,11 @@ class FilterQuestionsForm extends Component {
 
 	renderDifficultyOptions() {
 		return difficulties.map((difficulty) => {
-			return <option value={difficulty}>{difficulty}</option>
+			return (
+				<option value={difficulty} key={difficulty}>
+					{difficulty}
+				</option>
+			)
 		})
 	}
 
@@ -72,7 +80,7 @@ class FilterQuestionsForm extends Component {
 }
 
 const formWrapped = reduxForm({
-	form: 'filterDetails',
+	form: 'filterDetails'
 })(FilterQuestionsForm)
 
 export default connect(null, { fetchFilterResults })(formWrapped)

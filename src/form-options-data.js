@@ -11,12 +11,11 @@ export const categories = [
 	'Stack',
 	'Graph',
 	'Recursion',
-	'Binary Tree',
 	'Heap',
 	'Binary Search',
-	'Trees',
+	'Tree',
 	'Sorting',
-	'Miscellaneous',
+	'Miscellaneous'
 ]
 
 export const difficulties = ['Easy', 'Medium', 'Hard']

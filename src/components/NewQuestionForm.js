@@ -26,7 +26,11 @@ class NewQuestionForm extends Component {
 
 	renderDifficultyOptions() {
 		return difficulties.map((difficulty) => {
-			return <option value={difficulty}>{difficulty}</option>
+			return (
+				<option value={difficulty} key={difficulty}>
+					{difficulty}
+				</option>
+			)
 		})
 	}
 
@@ -45,7 +49,11 @@ class NewQuestionForm extends Component {
 
 	renderCategoryOptions() {
 		return categories.map((category) => {
-			return <option value={category}>{category}</option>
+			return (
+				<option value={category} key={category}>
+					{category}
+				</option>
+			)
 		})
 	}
 

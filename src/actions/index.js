@@ -53,20 +53,22 @@ export const fetchQuestions = () => {
 		fetch the questions, so dispatching the fetchQuestionCount() action creator first, then waiting until
 		the state gets populated, then dispatching the fetchQuestions() action creator. */
 	return async (dispatch, getState) => {
-		if (!getState().rows.questionCount) {
-			await dispatch(fetchQuestionCount())
-		}
-		const { startRow, endRow } = getState().rows
-		try {
-			const response = await sheetcodeApi.get(`/questions?start_row=${startRow}&end_row=${endRow}`)
-			dispatch({
-				type: FETCH_QUESTIONS,
-				payload: response.data
-			})
+		let response = null,
+			init_question_count = false
 
-			dispatch({
-				type: UPDATE_ROW_RANGE
-			})
+		try {
+			if (!getState().rows.questionCount) {
+				init_question_count = true
+				response = await sheetcodeApi.get(`/questions?init_question_count=${init_question_count}`)
+				dispatch({
+					type: FETCH_QUESTION_COUNT,
+					payload: response.data.questionCount
+				})
+			} else {
+				const { startRow, endRow } = getState().rows
+
+				response = await sheetcodeApi.get(`/questions?start_row=${startRow}&end_row=${endRow}`)
+			}
 		} catch (err) {
 			dispatch({
 				type: ERROR,
@@ -74,24 +76,15 @@ export const fetchQuestions = () => {
 			})
 			history.push('/error')
 		}
-	}
-}
 
-export const fetchQuestionCount = () => {
-	return async (dispatch) => {
-		try {
-			const response = await sheetcodeApi.get('/questions/count')
-			dispatch({
-				type: FETCH_QUESTION_COUNT,
-				payload: response.data
-			})
-		} catch (err) {
-			dispatch({
-				type: ERROR,
-				payload: err.message
-			})
-			history.push('/error')
-		}
+		dispatch({
+			type: FETCH_QUESTIONS,
+			payload: init_question_count ? response.data.questions : response.data
+		})
+
+		dispatch({
+			type: UPDATE_ROW_RANGE
+		})
 	}
 }
 
