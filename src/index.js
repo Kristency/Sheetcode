@@ -5,6 +5,10 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '@forevolve/bootstrap-dark/dist/css/toggle-bootstrap-dark.min.css'
+import '@forevolve/bootstrap-dark/dist/css/toggle-bootstrap-print.min.css'
+import './App.css'
+
 import App from './components/App'
 import reducers from './reducers'
 

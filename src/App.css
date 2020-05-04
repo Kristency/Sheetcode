@@ -1,0 +1,16 @@
+.responsive-width {
+	width: 30% !important;
+	margin-left: 34% !important;
+}
+
+@media (max-width: 1200px) {
+	.responsive-width {
+		width: 100% !important;
+		margin-top: 10% !important;
+		margin-left: 0 !important;
+	}
+}
+
+.pointer {
+	cursor: pointer !important;
+}

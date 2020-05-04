@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import { addQuestion } from '../actions'
 import { categories, difficulties } from '../form-options-data'
-import './App.css'
 
 class NewQuestionForm extends Component {
 	renderError({ touched, error }) {
@@ -101,7 +100,7 @@ class NewQuestionForm extends Component {
 								<div className="form-group col-md-6">
 									<Field name="category" label="Select Category" component={this.renderCategoryDropDownSelect}></Field>
 								</div>
-								<div className="form-group col-md-6">
+								<div className="form-group col-md-6 m-auto">
 									<Field name="solution_link" component={this.renderInput} label="Enter solution link" type="text" />
 								</div>
 								<button type="submit" className="btn btn-outline-dark btn-lg my-4 px-5 responsive-width">

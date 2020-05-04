@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { SignIn, SignOut } from '../actions'
 
-class GoogleAuth extends React.Component {
+class GoogleAuth extends Component {
 	componentDidMount() {
 		window.gapi.load('client:auth2', () => {
 			window.gapi.client
@@ -39,22 +39,14 @@ class GoogleAuth extends React.Component {
 		if (this.props.isSignedIn === null) {
 			return null
 		} else if (this.props.isSignedIn) {
-			return (
-				<button onClick={this.onSignOutClick} className="btn btn-danger">
-					SignOut
-				</button>
-			)
+			return <div onClick={this.onSignOutClick}>Sign Out</div>
 		} else {
-			return (
-				<button onClick={this.onSignInClick} className="btn btn-danger">
-					SignIn
-				</button>
-			)
+			return <div onClick={this.onSignInClick}>Sign In</div>
 		}
 	}
 
 	render() {
-		return <div>{this.renderAuthButtons()}</div>
+		return <Fragment>{this.renderAuthButtons()}</Fragment>
 	}
 }
 

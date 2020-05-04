@@ -3,7 +3,6 @@ import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 
 import { updateQuestionDetails } from '../actions'
-import './App.css'
 
 class EditQuestionDetailsForm extends Component {
 	renderError({ touched, error }) {
@@ -89,7 +88,7 @@ const validate = (formValues) => {
 const mapStateToProps = (state, ownProps) => {
 	let { name, link: problem_link } = ownProps.question
 	return {
-		initialValues: { name, problem_link },
+		initialValues: { name, problem_link }
 		// very special prop, used by redux-form to set initial values of the fields
 	}
 }
@@ -97,7 +96,7 @@ const mapStateToProps = (state, ownProps) => {
 const formWrapped = reduxForm({
 	form: 'editQuestionDetails',
 	validate,
-	enableReinitialize: true,
+	enableReinitialize: true
 })(EditQuestionDetailsForm)
 
 export default connect(mapStateToProps, { updateQuestionDetails })(formWrapped)

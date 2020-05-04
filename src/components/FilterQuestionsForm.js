@@ -4,9 +4,31 @@ import { connect } from 'react-redux'
 
 import { fetchFilterResults } from '../actions'
 import { categories, difficulties } from '../form-options-data'
-import './App.css'
 
 class FilterQuestionsForm extends Component {
+	renderCheckBox = ({ input, label, type, meta }) => {
+		return (
+			<div className="custom-control custom-checkbox">
+				<input {...input} type={type} className="custom-control-input" id="customCheck1" />
+				<label className="custom-control-label" htmlFor="customCheck1">
+					{label}
+				</label>
+			</div>
+		)
+	}
+
+	renderAuthCheckBox() {
+		if (this.props.isSignedIn) {
+			return (
+				<div className="form-group col-md-6">
+					<Field name="unsolved_questions" component={this.renderCheckBox} label="Show unsolved questions only" type="checkbox" />
+				</div>
+			)
+		} else {
+			return null
+		}
+	}
+
 	renderCategoryOptions() {
 		return categories.map((category) => {
 			return (
@@ -52,6 +74,9 @@ class FilterQuestionsForm extends Component {
 	}
 
 	onSubmit = (formValues) => {
+		if (this.props.isSignedIn) {
+			formValues['user_column'] = this.props.user_column
+		}
 		this.props.fetchFilterResults(formValues)
 		this.props.functionToCallAfterFormSubmitToCloseModal()
 	}
@@ -68,6 +93,7 @@ class FilterQuestionsForm extends Component {
 							<div className="form-group col-md-6">
 								<Field name="difficulty" label="Select Difficulty" component={this.renderDifficultyDropDownSelect}></Field>
 							</div>
+							{this.renderAuthCheckBox()}
 							<button type="submit" className="btn btn-outline-dark btn-lg my-4 px-5 responsive-width">
 								Apply
 							</button>
@@ -79,8 +105,15 @@ class FilterQuestionsForm extends Component {
 	}
 }
 
+const mapStateToProps = (state) => {
+	return {
+		isSignedIn: state.auth.isSignedIn,
+		user_column: state.auth._id
+	}
+}
+
 const formWrapped = reduxForm({
 	form: 'filterDetails'
 })(FilterQuestionsForm)
 
-export default connect(null, { fetchFilterResults })(formWrapped)
+export default connect(mapStateToProps, { fetchFilterResults })(formWrapped)

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Navbar, Nav, Button, FormControl, Form } from 'react-bootstrap'
-import { FaCode, FaMarker, FaFilter } from 'react-icons/fa'
+import { Navbar, Nav, Button, FormControl, Form, Dropdown, InputGroup } from 'react-bootstrap'
+import { FaCode, FaMarker, FaFilter, FaSearch, FaUserCog } from 'react-icons/fa'
 
 import GoogleAuth from './GoogleAuth'
+import DarkModeButton from './DarkModeButton'
 import NewQuestionModal from './NewQuestionModal'
 import FilterQuestionsModal from './FilterQuestionsModal'
 import { fetchSearchResults } from '../actions'
@@ -13,7 +14,14 @@ import history from '../history'
 class Header extends Component {
 	state = { term: '', newQuestionModalShow: false, filterQuestionModalShow: false }
 
-	onInputChange = (event) => {
+	componentDidMount() {
+		const presentTheme = localStorage.getItem('theme')
+		if (presentTheme && presentTheme === 'dark') {
+			document.body.classList.add('bootstrap-dark')
+		}
+	}
+
+	onSearchInputChange = (event) => {
 		this.setState({ term: event.target.value })
 	}
 
@@ -61,21 +69,41 @@ class Header extends Component {
 							Filter Questions <FaFilter />
 						</Nav.Link>
 					</Nav>
-					<Form as="form" inline onSubmit={this.onFormSubmit}>
-						<FormControl
-							as="input"
-							type="text"
-							placeholder="Search"
-							onChange={this.onInputChange}
-							value={this.state.term}
-							className="mr-sm-2"
-						/>
-						<Button type="submit" variant="outline-success" className="mt-2 mt-md-0">
-							Search
-						</Button>
+
+					<Form as="form" inline onSubmit={this.onFormSubmit} className="mb-2 mb-md-0 mr-md-2">
+						<InputGroup className="mr-sm-2">
+							<FormControl
+								as="input"
+								type="text"
+								placeholder="Search"
+								onChange={this.onSearchInputChange}
+								value={this.state.term}
+							/>
+							<InputGroup.Append>
+								<Button type="submit" variant="outline-secondary" className="px-3">
+									<FaSearch />
+								</Button>
+							</InputGroup.Append>
+						</InputGroup>
 					</Form>
-					<GoogleAuth />
 				</Navbar.Collapse>
+				<Dropdown alignRight>
+					<Dropdown.Toggle as={Button} variant="success" id="dropdown-basic">
+						{this.props.name} &nbsp;
+						<FaUserCog />
+					</Dropdown.Toggle>
+					<Dropdown.Menu>
+						<Dropdown.Item as="button">
+							<GoogleAuth />
+						</Dropdown.Item>
+						<Dropdown.Item as={DarkModeButton} />
+					</Dropdown.Menu>
+				</Dropdown>
+
+				{/* This component is always hidden from view, just there to initialize auth status on mount */}
+				<div className="d-none">
+					<GoogleAuth />
+				</div>
 				<NewQuestionModal show={this.state.newQuestionModalShow} onHide={this.newQuestionModalClose} />
 				<FilterQuestionsModal show={this.state.filterQuestionModalShow} onHide={this.filterQuestionModalClose} />
 			</Navbar>
@@ -85,7 +113,8 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isSignedIn: state.auth.isSignedIn
+		isSignedIn: state.auth.isSignedIn,
+		name: state.auth.name
 	}
 }
 

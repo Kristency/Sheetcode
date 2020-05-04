@@ -3,7 +3,6 @@ import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 
 import { addSolution } from '../actions'
-import './App.css'
 
 class NewSolutionForm extends Component {
 	renderError({ touched, error }) {
@@ -40,7 +39,7 @@ class NewSolutionForm extends Component {
 					<div className="col-12 col-md-10">
 						<form onSubmit={this.props.handleSubmit(this.onSubmit)} autoComplete="off">
 							<div className="form-row">
-								<div className="form-group col-md-6">
+								<div className="form-group col-md-6 m-auto">
 									<Field name="solution_link" component={this.renderInput} label="Enter solution link" type="text" />
 								</div>
 								<button type="submit" className="btn btn-outline-dark btn-lg my-4 px-5 responsive-width">

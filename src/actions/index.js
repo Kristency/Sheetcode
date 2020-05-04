@@ -157,13 +157,13 @@ export const clearPreviousResults = () => {
 export const fetchSearchResults = (term) => {
 	return async (dispatch) => {
 		dispatch(clearPreviousResults())
+		history.push('/results')
 		try {
 			const response = await sheetcodeApi.get(`/search?search_query=${term}`)
 			dispatch({
 				type: FETCH_SEARCH_RESULTS,
 				payload: response.data
 			})
-			history.push('/results')
 		} catch (err) {
 			dispatch({
 				type: ERROR,
@@ -175,21 +175,34 @@ export const fetchSearchResults = (term) => {
 }
 
 export const fetchFilterResults = (formValues) => {
-	let query_category = 'category' in formValues && formValues.category !== 'All' ? `category=${formValues.category}` : ``
-	let query_difficulty = 'difficulty' in formValues && formValues.difficulty !== 'All' ? `&difficulty=${formValues.difficulty}` : ``
+	let query_category = '',
+		query_difficulty = '',
+		query_unsolved_questions = ''
+
+	// console.log(formValues)
+
+	if ('category' in formValues && formValues.category !== 'All') {
+		query_category = `category=${formValues.category}`
+	}
+	if ('difficulty' in formValues && formValues.difficulty !== 'All') {
+		query_difficulty = `&difficulty=${formValues.difficulty}`
+	}
+	if ('unsolved_questions' in formValues && formValues.unsolved_questions === true) {
+		query_unsolved_questions = `&unsolved_questions=${formValues.unsolved_questions}&user_column=${formValues.user_column}`
+	}
 
 	return async (dispatch) => {
 		/* Actions are dispatched synchronously so Redux guarantees the store has received the next state before 
 		accepting the next action. Because clearPreviousResults is synchronous, any action dispatched from asynchronous
 		fetchFilterResults is guaranteed to happen after it. */
 		dispatch(clearPreviousResults())
+		history.push('/results')
 		try {
-			const response = await sheetcodeApi.get(`/questions?${query_category}${query_difficulty}`)
+			const response = await sheetcodeApi.get(`/questions?${query_category}${query_difficulty}${query_unsolved_questions}`)
 			dispatch({
 				type: FETCH_FILTER_RESULTS,
 				payload: response.data
 			})
-			history.push('/results')
 		} catch (err) {
 			dispatch({
 				type: ERROR,
