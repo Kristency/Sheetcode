@@ -35,6 +35,18 @@ class Header extends Component {
 		this.setState({ filterQuestionModalShow: false })
 	}
 
+	renderQuestionAddButton() {
+		if (this.props.isSignedIn) {
+			return (
+				<Nav.Link onClick={() => this.setState({ newQuestionModalShow: true })}>
+					Add Question <FaMarker />
+				</Nav.Link>
+			)
+		} else {
+			return null
+		}
+	}
+
 	render() {
 		return (
 			<Navbar bg="dark" variant="dark" expand="lg" sticky="top">
@@ -44,9 +56,7 @@ class Header extends Component {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="mr-auto">
-						<Nav.Link onClick={() => this.setState({ newQuestionModalShow: true })}>
-							Add Question <FaMarker />
-						</Nav.Link>
+						{this.renderQuestionAddButton()}
 						<Nav.Link onClick={() => this.setState({ filterQuestionModalShow: true })}>
 							Filter Questions <FaFilter />
 						</Nav.Link>
@@ -73,4 +83,10 @@ class Header extends Component {
 	}
 }
 
-export default connect(null, { fetchSearchResults })(Header)
+const mapStateToProps = (state) => {
+	return {
+		isSignedIn: state.auth.isSignedIn
+	}
+}
+
+export default connect(mapStateToProps, { fetchSearchResults })(Header)

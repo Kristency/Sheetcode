@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { Card, Badge, Button } from 'react-bootstrap'
 import { FaRegEdit } from 'react-icons/fa'
 
-// import SignInPrompt from '../SignInPrompt'
-
 const difficultyColor = {
 	Easy: 'success',
 	Medium: 'warning',

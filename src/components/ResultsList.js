@@ -6,9 +6,8 @@ import EditQuestionDetailsModal from './EditQuestionDetailsModal'
 import QuestionCard from './QuestionCard'
 import Spinner from './Spinner'
 
-import NoResults from './no_results.png'
-
 const NO_RESULTS = 'NO_RESULTS'
+const NO_RESULTS_IMG_URL = 'https://res.cloudinary.com/sheetcode-no-results-img/image/upload/v1588590224/no_results_ffohyz.png'
 
 class ResultsList extends Component {
 	state = {
@@ -38,7 +37,7 @@ class ResultsList extends Component {
 		if (this.props.filterOrSearchResults[0] === NO_RESULTS) {
 			return (
 				<div className="row justify-content-center mx-0 mt-5 mt-md-0">
-					<img src={NoResults} height="15%" width="55%" alt="no results" />
+					<img src={NO_RESULTS_IMG_URL} height="15%" width="55%" alt="no results" />
 				</div>
 			)
 		} else {
