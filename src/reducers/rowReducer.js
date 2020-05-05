@@ -5,7 +5,7 @@ export default (state = { questionCount: null, startRow: null, endRow: null }, a
 		case UPDATE_ROW_RANGE:
 			return { ...state, startRow: state.startRow - 20, endRow: state.startRow }
 		case FETCH_QUESTION_COUNT:
-			return { ...state, questionCount: action.payload, startRow: action.payload - 20, endRow: action.payload }
+			return { ...state, questionCount: action.payload, startRow: action.payload - 18, endRow: action.payload + 1 }
 		default:
 			return state
 	}
