@@ -23,7 +23,8 @@ class NewSolutionForm extends Component {
 	}
 
 	onSubmit = (formValues) => {
-		this.props.addSolution({ ...formValues, _id: this.props.question._id })
+		formValues['_id'] = this.props.question._id
+		this.props.addSolution(formValues)
 		this.props.functionToCallAfterFormSubmitToCloseModal()
 	}
 

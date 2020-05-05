@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Card, Badge, Button } from 'react-bootstrap'
+
+import Card from 'react-bootstrap/Card'
+import Badge from 'react-bootstrap/Badge'
+import Button from 'react-bootstrap/Button'
+
 import { FaRegEdit } from 'react-icons/fa'
 
 const difficultyColor = {

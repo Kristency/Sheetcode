@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Navbar, Nav, Button, FormControl, Form, Dropdown, InputGroup } from 'react-bootstrap'
+
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+import Button from 'react-bootstrap/Button'
+import FormControl from 'react-bootstrap/FormControl'
+import Form from 'react-bootstrap/Form'
+import Dropdown from 'react-bootstrap/Dropdown'
+import InputGroup from 'react-bootstrap/InputGroup'
+
 import { FaCode, FaMarker, FaFilter, FaSearch, FaUserCog } from 'react-icons/fa'
 
 import GoogleAuth from './GoogleAuth'

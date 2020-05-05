@@ -4,12 +4,14 @@ import {
 	FETCH_QUESTIONS,
 	ADD_QUESTION,
 	ADD_SOLUTION,
+	ADD_SOLUTION_RESULTS_PAGE,
 	FETCH_SEARCH_RESULTS,
 	FETCH_FILTER_RESULTS,
 	UPDATE_ROW_RANGE,
 	FETCH_QUESTION_COUNT,
 	CLEAR_PREVIOUS_RESULTS,
 	UPDATE_QUESTION_DETAILS,
+	UPDATE_QUESTION_DETAILS_RESULTS_PAGE,
 	ERROR
 } from './types'
 
@@ -120,6 +122,10 @@ export const addSolution = (formValues) => {
 				type: ADD_SOLUTION,
 				payload: formValues
 			})
+			dispatch({
+				type: ADD_SOLUTION_RESULTS_PAGE,
+				payload: formValues
+			})
 		} catch (err) {
 			dispatch({
 				type: ERROR,
@@ -136,6 +142,10 @@ export const updateQuestionDetails = (formValues) => {
 			await sheetcodeApi.patch('/questions/update_question', formValues)
 			dispatch({
 				type: UPDATE_QUESTION_DETAILS,
+				payload: formValues
+			})
+			dispatch({
+				type: UPDATE_QUESTION_DETAILS_RESULTS_PAGE,
 				payload: formValues
 			})
 		} catch (err) {
